@@ -1,0 +1,12 @@
+.page {
+  height: 100%;
+  min-width: 320px;
+  max-width: 880px;
+  color: white;
+  font-family: "Inter", Arial, sans-serif;
+  font-weight: normal;
+  margin-top: 0;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 0;
+}
