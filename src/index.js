@@ -38,21 +38,16 @@ const popupImageTitle = popupImage.querySelector('.popup__image-title');
 
 //Цикл для авто добавления карточек из массива
 
-export function renderCard(card) {
+function renderCard(card) {
   return group.prepend(card);
 }
 
 initialCards.forEach(value => {
-  renderCard(createCard(value, selectorTemplate, openImagePopup));
+  group.append(createCard(value, selectorTemplate, openImagePopup));
 })
 
 // универсальные функции закрытия и открытия попапов
-function escapeKeyHendler(evt) {
-  const popup = document.querySelector('.popup_opened');
-  if(evt.key === 'Escape' && popup) {
-    closePopup(popup);
-  }
-}
+
 // 1 попап открытие и закрытие
 
 function openProfilPopup() {
@@ -127,4 +122,3 @@ popupOverlay.forEach(popup => {
   })
 });
 
-document.addEventListener('keydown', escapeKeyHendler);

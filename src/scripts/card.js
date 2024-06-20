@@ -23,13 +23,13 @@
     // слушатель на лайк
     groupButton.addEventListener('click', evt => cardLike(evt.target));
     // слушатель на корзинку удалить
-    groupButtonDelete.addEventListener('click', () => deleteCard(groupButtonDelete.closest('.group__element')));
+    groupButtonDelete.addEventListener('click', () => deleteCard(card));
     return card;
 }
-export function cardLike (card) {
+function cardLike (card) {
   card.classList.toggle('group__button_active');
 }
 
-export function deleteCard(card) {
+function deleteCard(card) {
     card.remove();
 }
