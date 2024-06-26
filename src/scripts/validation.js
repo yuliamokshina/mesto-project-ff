@@ -1,3 +1,5 @@
+
+// функция валидаци(проверка значений инпутов формы)
 export function validation(obj, input) {
     const errMsg = input.nextElementSibling
     const form = input.closest(obj.formSelector)
@@ -22,14 +24,15 @@ export function validation(obj, input) {
     submit.disabled = !formChecked(obj, form)
 }
 
+// Проверка всех инпутов на валидность
 export function formChecked(obj, form) {
     const elements = form.querySelectorAll(obj.inputSelector)
     console.log(obj.inputSelector);
     return Array.from(elements).every(input => input.validity.valid)
 }
 
+// сброс валидации
 export function clearValidation(form, obj) {
-    console.log(obj);
     const inputs = document.querySelectorAll(obj.inputSelector)
     inputs.forEach(input => {
         input.classList.remove(obj.inputErrorClass)
@@ -41,6 +44,7 @@ export function clearValidation(form, obj) {
     submit.disabled = !formChecked(obj, form)
 }
 
+// Включение валидации
 export function enableValidation(obj) {
     document.querySelectorAll(obj.inputSelector).forEach((input) => {
         input.addEventListener('input', () => validation(obj, input))

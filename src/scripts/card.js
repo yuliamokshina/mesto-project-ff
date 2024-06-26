@@ -11,12 +11,13 @@
     const groupButton = card.querySelector('.group__button');
     const groupButtonDelete = card.querySelector('.group__button-delete');
     const likeCounter = card.querySelector('.group__like');
-
+    // отображение количества лайков
     likeCounter.textContent = cardData.likes.length || '';
+    // отображение кнопки удаления картоки
     if(cardData.owner._id !== userId) {
       groupButtonDelete.remove();
     }
-
+    // отображение состояния лайка карточки (лайкнули мы ее или нет)
     if(cardData.likes.some(like => like._id === userId)) {
       groupButton.classList.add('group__button_active');
     }
@@ -48,7 +49,7 @@
             cardLike(evt.target)
           }).catch((err) => console.log(err))
       }
-    } );
+    });
 
     // слушатель на корзинку удалить
     groupButtonDelete.addEventListener('click', () => {
@@ -63,7 +64,7 @@
 function cardLike (card) {
   card.classList.add('group__button_active');
 }
-
+// функция дизлайка
 function dislikeCard(card) {
   card.classList.remove('group__button_active');
 }

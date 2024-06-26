@@ -43,6 +43,7 @@ const popupImage = document.querySelector('.popup_type_image');
 const popupImagePhoto = popupImage.querySelector('.popup__image-photo');
 const popupImageTitle = popupImage.querySelector('.popup__image-title');
 
+// объект с селекторами элементов формы
 const validationSettings = {
   formSelector: '.popup__form',
   inputSelector: '.popup__input',
@@ -52,14 +53,15 @@ const validationSettings = {
   errorClass: 'popup__error_visible'
 }
 
+// объект который хранит данные пользователя
 let user = {}
 
 // функция для добавления карточек
 function renderCard(card) {
   return group.prepend(card);
 }
-// Инициализация(первичное добавление карточек и отрисовка(рендер) на странице) карточек
 
+// Инициализация получение карточек и данных пользователя и распределение этих данных
 Promise.all([getUserInfo(), getCards()]).then(([userData, cardData]) => {
   profileTitle.textContent = userData.name;
   profileSubtitle.textContent = userData.about;
@@ -91,7 +93,7 @@ function openImagePopup(cardData) {
   popupImageTitle.textContent = cardData.name;
   openPopup(popupImage);
 }
-
+// открытие попапа с формой аватарки
 function openAvatarPopup() {
   openPopup(popupAvatar);
   clearValidation(formEditAvatar, validationSettings)
@@ -101,11 +103,14 @@ function openAvatarPopup() {
 profileButtonEdit.addEventListener('click', openProfilPopup);
 btnEditAvatar.addEventListener('click', openAvatarPopup);
 
+
+// слушатель для формы аватарки
 formEditAvatar.addEventListener('submit', evt => {
   evt.preventDefault();
   formEditAvatar.querySelector('.popup__button').textContent = 'Сохранение...';
   setUserAvatar({ avatar: formEditAvatar.elements['avatar'].value }).then((data) => {
-    btnEditAvatar.children[0].src = formEditAvatar.elements['avatar'].value;
+    btnEditAvatar.children[0].src = data.avatar;
+    user = data
     closePopup(popupAvatar);
   }).catch((err) => console.log(err))
   .finally(() => formEditAvatar.querySelector('.popup__button').textContent = 'Сохранить')
