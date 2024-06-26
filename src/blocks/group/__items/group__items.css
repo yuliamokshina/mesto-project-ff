@@ -1,8 +1,0 @@
-.group__items {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 19px 26px 21px;
-  margin: 0;
-}
