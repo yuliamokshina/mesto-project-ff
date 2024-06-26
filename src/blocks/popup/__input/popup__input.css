@@ -9,9 +9,8 @@
   line-height: 17px;
   height: 27px;
   width: 238px;
-  margin: 0;
   padding: 0;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
 }
 
 @media screen and (min-width: 880px) {
