@@ -17,6 +17,7 @@ const popupAvatar = document.querySelector('.popup_type_avatar');
 const btnEditAvatar = document.querySelector('.profile__avatar-edit');
 const profileAvatar = document.querySelector('.profile__avatar');
 const formEditAvatar = popupAvatar.querySelector('.popup__form');
+const btnEditAvatarForm = popupAvatar.querySelector('.popup__button');
 
 // Переменные профиля
 const profileTitle = document.querySelector('.profile__title');
@@ -28,6 +29,7 @@ const popupProfile = document.querySelector('.popup_type_profile');
 const popupProfileForm = popupProfile.querySelector('.popup__form');
 const popupInputName = popupProfile.querySelector('.popup__input_data_name');
 const popupInputInfo = popupProfile.querySelector('.popup__input_info_name');
+const btnProfileForm = popupProfile.querySelector('.popup__button');
 
 // Кнопка отркрытия попапа с изменениеми профиля
 const profileButtonAdd = document.querySelector('.profile__button')
@@ -37,13 +39,13 @@ const popupAdd = document.querySelector('.popup_type_add');
 const popupAddForm = popupAdd.querySelector('.popup__form');
 const popupInputDataNameAdd = popupAdd.querySelector('.popup__input_data_name-add');
 const popupInputUrlNameAdd = popupAdd.querySelector('.popup__input_url-add');
+const btnAddForm =popupAdd.querySelector('.popup__button')
 
 //Переменная карточки
 const popupImage = document.querySelector('.popup_type_image');
 const popupImagePhoto = popupImage.querySelector('.popup__image-photo');
 const popupImageTitle = popupImage.querySelector('.popup__image-title');
 
-// объект с селекторами элементов формы
 const validationSettings = {
   formSelector: '.popup__form',
   inputSelector: '.popup__input',
@@ -53,21 +55,20 @@ const validationSettings = {
   errorClass: 'popup__error_visible'
 }
 
-// объект который хранит данные пользователя
 let user = {}
 
 // функция для добавления карточек
 function renderCard(card) {
   return group.prepend(card);
 }
+// Инициализация(первичное добавление карточек и отрисовка(рендер) на странице) карточек
 
-// Инициализация получение карточек и данных пользователя и распределение этих данных
-Promise.all([getUserInfo(), getCards()]).then(([userData, cardData]) => {
+Promise.all([getUserInfo(), getCards()]).then(([userData, cardsData]) => {
   profileTitle.textContent = userData.name;
   profileSubtitle.textContent = userData.about;
   profileAvatar.src = userData.avatar;
   user = userData
-  cardData.forEach(value => group.append(createCard(value, selectorTemplate, openImagePopup, user._id, deleteCardApi, likeCardApi, dislikeCardApi )))
+  cardsData.forEach(value => group.append(createCard(value, selectorTemplate, openImagePopup, user._id, deleteCardApi, likeCardApi, dislikeCardApi )))
 }).catch((err) => console.log(err))
 
 // открытие попапа профиля
@@ -93,7 +94,7 @@ function openImagePopup(cardData) {
   popupImageTitle.textContent = cardData.name;
   openPopup(popupImage);
 }
-// открытие попапа с формой аватарки
+
 function openAvatarPopup() {
   openPopup(popupAvatar);
   clearValidation(formEditAvatar, validationSettings)
@@ -103,46 +104,42 @@ function openAvatarPopup() {
 profileButtonEdit.addEventListener('click', openProfilPopup);
 btnEditAvatar.addEventListener('click', openAvatarPopup);
 
-
-// слушатель для формы аватарки
 formEditAvatar.addEventListener('submit', evt => {
   evt.preventDefault();
-  formEditAvatar.querySelector('.popup__button').textContent = 'Сохранение...';
+  btnEditAvatarForm.textContent = 'Сохранение...';
   setUserAvatar({ avatar: formEditAvatar.elements['avatar'].value }).then((data) => {
-    btnEditAvatar.children[0].src = data.avatar;
-    user = data
+    btnEditAvatar.children[0].src = formEditAvatar.elements['avatar'].value;
     closePopup(popupAvatar);
   }).catch((err) => console.log(err))
-  .finally(() => formEditAvatar.querySelector('.popup__button').textContent = 'Сохранить')
+  .finally(() => btnEditAvatarForm.textContent = 'Сохранить')
 });
 
 // Слушатель для формы профиля
 popupProfileForm.addEventListener('submit', evt => {
   evt.preventDefault();
-  popupProfileForm.querySelector('.popup__button').textContent = 'Сохранение...';
+  btnProfileForm.textContent = 'Сохранение...';
   setUserInfoApi({ name: popupInputName.value, about: popupInputInfo.value }).then((data) => {
     profileTitle.textContent = data.name;
     profileSubtitle.textContent = data.about;  
     user = data
     closePopup(popupProfile);
   }).catch((err) => console.log(err))
-  .finally(() => popupProfileForm.querySelector('.popup__button').textContent = 'Сохранить')
+  .finally(() => btnProfileForm.textContent = 'Сохранить')
 });
 // слушатель для кнопки добавления карточки
 profileButtonAdd.addEventListener('click', openAddPopup);
 
 //Слушатель для формы добавления карточки
-popupAdd.addEventListener('submit', evt => {
+popupAddForm.addEventListener('submit', evt => {
   evt.preventDefault();
   const name = popupInputDataNameAdd.value;
   const link = popupInputUrlNameAdd.value;
-  popupAdd.querySelector('.popup__button').textContent = 'Сохранение...';
+  btnAddForm.textContent = 'Сохранение...';
   addCard({name, link}).then((data) => {
     renderCard(createCard(data, selectorTemplate, openImagePopup, user._id, deleteCardApi, likeCardApi, dislikeCardApi ));
-    popupAddForm.reset();
     closePopup(popupAdd);
   }).catch((err) => console.log(err))
-  .finally(() => popupAdd.querySelector('.popup__button').textContent = 'Сохранить')
+  .finally(() => btnAddForm.textContent = 'Сохранить')
 });
 
 //устанавливаем слушателя на закрытие всех попапов сразу
@@ -152,8 +149,8 @@ document.querySelectorAll('.popup__close').forEach(button => {
 });
 
 //закрытие попапа с профилем кликом по оверлею
-const popupOverlay = document.querySelectorAll(".popup");
-popupOverlay.forEach(popup => {
+const overlayPopups = document.querySelectorAll(".popup");
+overlayPopups.forEach(popup => {
   popup.addEventListener("mousedown",  event => {
     if (event.target == popup) {
       closePopup(popup);

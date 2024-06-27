@@ -1,5 +1,3 @@
-
-// функция валидаци(проверка значений инпутов формы)
 export function validation(obj, input) {
     const errMsg = input.nextElementSibling
     const form = input.closest(obj.formSelector)
@@ -21,30 +19,26 @@ export function validation(obj, input) {
         errMsg.textContent = ''
     }
     const submit = form.querySelector(obj.submitButtonSelector)
-    submit.disabled = !formChecked(obj, form)
+    submit.disabled = !checkedForm(obj, form)
 }
 
-// Проверка всех инпутов на валидность
-export function formChecked(obj, form) {
+export function checkedForm(obj, form) {
     const elements = form.querySelectorAll(obj.inputSelector)
-    console.log(obj.inputSelector);
     return Array.from(elements).every(input => input.validity.valid)
 }
 
-// сброс валидации
 export function clearValidation(form, obj) {
-    const inputs = document.querySelectorAll(obj.inputSelector)
+    const inputs = form.querySelectorAll(obj.inputSelector)
     inputs.forEach(input => {
         input.classList.remove(obj.inputErrorClass)
         const errMsg = input.nextElementSibling
         errMsg.textContent = ''
     })
     form.reset()
-    const submit = document.querySelector(obj.submitButtonSelector)
-    submit.disabled = !formChecked(obj, form)
+    const submit = form.querySelector(obj.submitButtonSelector)
+    submit.disabled = !checkedForm(obj, form)
 }
 
-// Включение валидации
 export function enableValidation(obj) {
     document.querySelectorAll(obj.inputSelector).forEach((input) => {
         input.addEventListener('input', () => validation(obj, input))
